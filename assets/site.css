@@ -1,0 +1,323 @@
+/* Retro Quest website. One dark look on purpose: the night sky of the splash art
+   runs edge to edge, panels are the game's dialog boxes, cards are album pages. */
+:root {
+  color-scheme: dark;
+  --night: #110d28;      /* splash and launch screen background */
+  --hud: #12142e;        /* the game's top strip */
+  --panel: #1a1c45;      /* dialog box fill */
+  --rule: #b6b5bb;       /* dialog box border */
+  --text: #f2efe6;
+  --muted: #bcb9d4;
+  --gold: #f3b214;       /* the logo's gold */
+  --page: #efe8d3;       /* album page */
+  --ink: #2e2820;
+  --ink-soft: #5a5142;
+  --sin: #a3341c;
+  --frame: #2f9e4a;      /* album frame for a collected photo */
+  --display: "Seven Cities", ui-monospace, Menlo, Consolas, monospace;
+  --body: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans", "Helvetica Neue", Arial, sans-serif;
+}
+
+@font-face {
+  font-family: "Seven Cities";
+  src: url("seven-cities.ttf") format("truetype");
+  font-display: swap;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-padding-top: 1rem;
+}
+
+body {
+  margin: 0;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  background: var(--night);
+  color: var(--text);
+  font: 1.0625rem/1.65 var(--body);
+}
+main { flex: 1 0 auto; }
+
+img { display: block; max-width: 100%; height: auto; }
+p { margin: 0; }
+ul, ol { margin: 0; padding: 0; }
+
+a { color: var(--gold); text-underline-offset: 0.18em; }
+a:hover { color: var(--text); }
+:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+
+/* The pixel face is drawn on an 8 px grid: keep it at multiples of 8 px. */
+.px, h1, .h2-px {
+  font-family: var(--display);
+  font-weight: 400;
+  font-synthesis: none;
+  letter-spacing: 0;
+  line-height: 1.4;
+  text-wrap: balance;
+  -webkit-font-smoothing: none;
+}
+
+.wrap {
+  width: 100%;
+  max-width: 78rem;
+  margin-inline: auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+
+/* ---------- top strip, like the game's HUD ---------- */
+.hud {
+  background: var(--hud);
+  border-bottom: 2px solid #000;
+}
+.hud-in {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-block: 0.625rem;
+}
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  color: var(--text);
+  text-decoration: none;
+  font: 400 16px/1 var(--display);
+  -webkit-font-smoothing: none;
+}
+.brand img { border-radius: 6px; }
+.brand span { display: none; }
+
+/* Links read like a game menu: the cursor marks where you are. */
+.menu { display: flex; gap: 0.5rem; }
+.menu a {
+  position: relative;
+  padding: 0.375rem 0.25rem 0.375rem 1.125rem;
+  color: var(--text);
+  text-decoration: none;
+  font: 400 16px/1 var(--display);
+  -webkit-font-smoothing: none;
+}
+.menu a::before {
+  content: ">";
+  position: absolute;
+  left: 0;
+  color: var(--gold);
+  opacity: 0;
+}
+.menu a:hover::before, .menu a:focus-visible::before, .menu a[aria-current="page"]::before { opacity: 1; }
+.menu a[aria-current="page"] { color: var(--gold); }
+
+/* ---------- dialog box ---------- */
+.box {
+  background: var(--panel);
+  border: 2px solid var(--rule);
+  border-radius: 10px;
+  padding: 1.125rem 1.25rem;
+  box-shadow: 0 0 0 2px #0a0820;
+}
+
+/* ---------- home: hero ---------- */
+.hero {
+  display: grid;
+  justify-items: center;
+  gap: 1.25rem;
+  padding-block: 1.5rem 3rem;
+}
+.hero h1 { margin: 0; width: 100%; }
+.splash { width: 100%; max-width: 60rem; margin-inline: auto; }
+.hero-box { width: 100%; max-width: 44rem; display: grid; gap: 0.75rem; }
+.hero-box .say { font-size: 1.125rem; }
+.soon { display: flex; flex-wrap: wrap; align-items: center; gap: 0.25rem 0.75rem; color: var(--muted); }
+.soon .px { color: var(--gold); font-size: 16px; }
+
+/* The title screen's slide up. Text never waits on an animation to be readable. */
+@media (prefers-reduced-motion: no-preference) {
+  .splash { animation: rise 0.7s steps(14) both; }
+}
+@keyframes rise { from { transform: translateY(28px); } to { transform: none; } }
+
+/* ---------- home: sections ---------- */
+.band { padding-block: 2.5rem; }
+.band-head { display: grid; gap: 0.5rem; margin-bottom: 1.5rem; max-width: 46rem; }
+.h2-px { margin: 0; font-size: 24px; color: var(--gold); }
+.lede { color: var(--muted); }
+
+/* The route, west to east: album pages in order. */
+.route { list-style: none; display: grid; gap: 0.75rem; }
+.stop {
+  display: grid;
+  grid-template-columns: 7.5rem minmax(0, 1fr);
+  gap: 0.875rem;
+  padding: 0.625rem;
+  background: var(--page);
+  color: var(--ink);
+  border-radius: 4px;
+  font-size: 0.9375rem;
+  line-height: 1.45;
+}
+.stop img {
+  width: 100%;
+  border: 3px solid var(--frame);
+}
+.stop-text { display: flex; flex-direction: column; gap: 0.125rem; min-width: 0; }
+.stop h3 { margin: 0; font-size: 1.0625rem; line-height: 1.3; }
+.sin { font: 400 16px/1.4 var(--display); color: var(--sin); -webkit-font-smoothing: none; }
+.boss { color: var(--ink-soft); }
+.leg { margin-top: 0.375rem; font-weight: 600; display: grid; grid-template-columns: auto minmax(0, 1fr); column-gap: 0.375rem; }
+.leg::before { content: ">"; font: 400 16px/1.45 var(--display); color: var(--sin); }
+.leg span { grid-column: 2; font-weight: 400; color: var(--ink-soft); }
+.stop:last-child .leg::before { content: none; }
+.stop:last-child .leg { display: block; }
+
+@media (min-width: 44rem) and (max-width: 74.99rem) {
+  .route { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .stop:last-child { grid-column: 1 / -1; }
+}
+@media (min-width: 75rem) {
+  .route { grid-template-columns: repeat(7, minmax(0, 1fr)); }
+  .stop { display: flex; flex-direction: column; gap: 0.625rem; }
+  .stop-text { flex: 1; }
+  .leg { margin-top: auto; padding-top: 0.5rem; }
+}
+
+/* Time */
+.split { display: grid; gap: 1.5rem; align-items: start; }
+.clock-box { display: grid; gap: 0.5rem; }
+.clock { font: 400 24px/1.4 var(--display); color: var(--gold); -webkit-font-smoothing: none; }
+.clock-note { color: var(--muted); font-size: 0.9375rem; }
+.prose { display: grid; gap: 0.875rem; max-width: 40rem; }
+@media (min-width: 52rem) {
+  .split { grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: 2.5rem; }
+  .clock { font-size: 32px; }
+}
+
+/* The game's counters, all still at zero */
+.counters { list-style: none; display: grid; gap: 1.25rem; }
+.counter { display: grid; gap: 0.25rem; align-content: start; }
+.counter .num { font: 400 32px/1.3 var(--display); color: var(--gold); -webkit-font-smoothing: none; }
+.counter .what { font: 400 16px/1.4 var(--display); -webkit-font-smoothing: none; }
+.counter p { color: var(--muted); font-size: 0.9375rem; line-height: 1.5; }
+@media (min-width: 40rem) { .counters { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 66rem) { .counters { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 2rem; } }
+
+/* Screens */
+.shots { display: grid; gap: 1.25rem; }
+.shots figure { margin: 0; display: grid; gap: 0.5rem; min-width: 0; }
+.shots img { width: 100%; border: 2px solid var(--rule); border-radius: 10px; }
+.shots figcaption { color: var(--muted); font-size: 0.9375rem; line-height: 1.5; }
+@media (min-width: 48rem) {
+  .shots { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .shots figure:first-child { grid-column: 1 / -1; }
+}
+
+.again { display: grid; gap: 0.5rem; }
+.again .px { color: var(--gold); font-size: 16px; }
+
+/* ---------- documents: privacy, support ---------- */
+.doc-wrap { padding-block: 2rem 3rem; }
+.doc { max-width: 46rem; margin-inline: auto; display: grid; gap: 1rem; min-width: 0; }
+.doc h1 { margin: 0; font-size: 24px; color: var(--gold); }
+.doc-meta { color: var(--muted); }
+.doc section { display: grid; gap: 0.75rem; min-width: 0; scroll-margin-top: 1rem; }
+.doc section + section { margin-top: 1.25rem; }
+.doc h2 { margin: 0; font-size: 1.3125rem; line-height: 1.3; text-wrap: balance; }
+.doc h2 .n { color: var(--gold); font: 400 16px/1 var(--display); margin-right: 0.5rem; -webkit-font-smoothing: none; }
+.doc h3 { margin: 0; font-size: 1.0625rem; line-height: 1.35; }
+.doc ul { padding-left: 1.25rem; display: grid; gap: 0.5rem; }
+.doc li { padding-left: 0.125rem; }
+.doc li::marker { color: var(--gold); }
+.doc code { font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 0.92em; overflow-wrap: anywhere; }
+.box h2 { font: 400 16px/1.4 var(--display); color: var(--gold); -webkit-font-smoothing: none; }
+.box.doc-box { display: grid; gap: 0.75rem; }
+
+.contents { display: grid; gap: 0.625rem; }
+.contents .px { color: var(--gold); font-size: 16px; }
+.contents ol { list-style: none; display: grid; gap: 0.125rem; font-size: 0.9375rem; }
+.contents .tag { color: var(--gold); margin-right: 0.375rem; font-variant-numeric: tabular-nums; }
+@media (min-width: 40rem) {
+  .contents ol { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 1.5rem; }
+}
+
+.chip {
+  justify-self: start;
+  max-width: 100%;
+  padding: 0.25rem 0.5rem;
+  border: 2px dashed var(--gold);
+  border-radius: 4px;
+  color: var(--gold);
+  font: 400 16px/1.4 var(--display);
+  -webkit-font-smoothing: none;
+}
+.pending { color: var(--gold); font-size: 0.875rem; white-space: nowrap; }
+
+/* Where data goes: a table, stacked into blocks on a phone. */
+.table-box { border: 2px solid var(--rule); border-radius: 10px; overflow: hidden; }
+.flow { width: 100%; border-collapse: collapse; font-size: 0.9375rem; line-height: 1.45; }
+.flow th, .flow td { padding: 0.625rem 0.75rem; text-align: left; vertical-align: top; }
+.flow thead th { background: var(--panel); font-weight: 600; color: var(--gold); }
+.flow tbody th { font-weight: 600; }
+.flow tbody tr + tr > * { border-top: 1px solid #3a3c68; }
+@media (max-width: 39.99rem) {
+  .flow thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+  .flow, .flow tbody, .flow tr, .flow th, .flow td { display: block; width: 100%; }
+  .flow tbody tr { padding: 0.625rem 0.75rem; }
+  .flow tbody tr + tr { border-top: 1px solid #3a3c68; }
+  .flow tbody tr + tr > * { border-top: 0; }
+  .flow th, .flow td { padding: 0; }
+  .flow td { margin-top: 0.25rem; color: var(--text); }
+  .flow td::before { content: attr(data-label) ": "; color: var(--muted); }
+}
+
+.mail { font-size: 1.125rem; overflow-wrap: anywhere; }
+
+/* ---------- 404 ---------- */
+.lost { display: grid; justify-items: center; gap: 1.25rem; padding-block: 4rem; text-align: center; }
+.lost h1 { margin: 0; font-size: 24px; color: var(--gold); }
+
+/* ---------- footer ---------- */
+.foot {
+  background: var(--hud);
+  border-top: 2px solid #000;
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+.foot-in {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem 1.5rem;
+  padding-block: 1rem;
+  color: var(--muted);
+  font-size: 0.9375rem;
+}
+.foot .links { display: flex; flex-wrap: wrap; gap: 0.25rem 1.25rem; }
+
+@media (min-width: 30rem) {
+  .brand span { display: inline; }
+}
+@media (min-width: 48rem) {
+  .hud { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; }
+  html { scroll-padding-top: 5rem; }
+  .doc section { scroll-margin-top: 5rem; }
+  .doc h1 { font-size: 32px; }
+  .h2-px { font-size: 32px; }
+  .band { padding-block: 3.5rem; }
+}
+
+@media print {
+  :root { color-scheme: light; }
+  body { background: #fff; color: #000; font-size: 11pt; }
+  .hud, .foot { display: none; }
+  .box, .table-box { background: none; border: 1px solid #000; box-shadow: none; }
+  .doc h1, .doc h2 .n, .box h2, .contents .px, .contents .tag, .chip, .pending, .flow thead th { color: #000; }
+  .doc-meta, .flow td::before { color: #000; }
+  .flow thead th { background: none; }
+  a { color: #000; }
+  .contents { display: none; }
+}
