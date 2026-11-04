@@ -216,6 +216,13 @@ a:hover { color: var(--text); }
   .shots figure:first-child { grid-column: 1 / -1; }
 }
 
+/* Play page: shared posts, as the game draws them (1080x1350, shown at half) */
+.posts { list-style: none; display: grid; gap: 1.25rem; max-width: 22rem; margin-inline: auto; }
+.posts img { width: 100%; border: 2px solid var(--rule); border-radius: 10px; }
+@media (min-width: 48rem) {
+  .posts { grid-template-columns: repeat(3, minmax(0, 1fr)); max-width: none; }
+}
+
 .again { display: grid; gap: 0.5rem; }
 .again .px { color: var(--gold); font-size: 16px; }
 
