@@ -1,4 +1,3 @@
 # app-ads.txt for Retro Quest (https://tobeyuj.github.io)
-# No ad network is active yet. When the AdMob account exists, add its line below,
-# using the publisher ID from AdMob > Settings:
-# google.com, pub-0000000000000000, DIRECT, f08c47fec0942fa0
+# Google AdMob, publisher pub-8839181686270827 (iOS and Android).
+google.com, pub-8839181686270827, DIRECT, f08c47fec0942fa0
